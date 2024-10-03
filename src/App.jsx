@@ -1,9 +1,9 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import SharedLayout from "../layouts/SharedLayouts.jsx";
 import Home from "../pages/Home.jsx";
-import Games from "../pages/Games.jsx";
-import Members from "../pages/Members.jsx";
-import News from "../pages/News.jsx";
+import Rankings from "../pages/Rankings.jsx";
+import Fixtures from "../pages/Fixtures.jsx";
+import Transferts from "../pages/Transferts.jsx";
 import ErrorPage from "../pages/ErrorPage.jsx";
 
 function ReactRouter() {
@@ -18,16 +18,16 @@ function ReactRouter() {
           element: <Home />,
         },
         {
-          path: "/games",
-          element: <Games />,
+          path: "/fixtures",
+          element: <Fixtures />,
         },
         {
-          path: "/members",
-          element: <Members />,
+          path: "/rankings",
+          element: <Rankings />,
         },
         {
-          path: "/news",
-          element: <News />,
+          path: "/transferts",
+          element: <Transferts />,
         },
       ],
     },
