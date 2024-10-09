@@ -14,7 +14,7 @@ var requestOptions = {
 
 fetch(
   "https://v3.football.api-sports.io/players?id=276&season=2021",
-  requestOptions
+  requestOptions,
 )
   .then((response) => response.text())
   .then((result) => console.log(result))
@@ -25,19 +25,37 @@ function Home() {
   return (
     <>
       <div
-        className="hero place-items-start min-h-[calc(100vh-4.3rem)]"
+        className="hero min-h-[calc(100vh-4.3rem)] place-items-start"
         style={{
           backgroundImage:
             "url(https://lelisia.com/cdn/shop/products/night-soccer-stadium-render.webp?v=1699408348)",
         }}
       >
-        <div className="hero-overlay none bg-opacity-60"></div>
-        <div className="p-4 md:container md:mx-auto">
+        <div className="none hero-overlay bg-opacity-60"></div>
+        <div className="flex h-full w-full p-4 md:container md:mx-auto">
           <Calendar
-            className="rounded-3xl bg-base-100/0  hidden lg:block lg:w-72 xl:w-80 2xl:w-1/4"
+            className="hidden h-1/3 rounded-3xl border-gray-300 bg-base-100/60 lg:block lg:w-72 xl:w-80 2xl:w-1/4"
             onChange={setValue}
             value={value}
           />
+          <div className="lg:w-1/1 ml-4 mr-4 h-3/4 w-full rounded-3xl border border-gray-300 bg-base-100/60 p-4 md:w-full lg:min-w-96">
+            <h3 className="text-center text-3xl">MATCHS DU JOUR</h3>
+            <div className="divider divider-success"></div>
+            <div>
+              <p className="rounded transition-all hover:bg-white/10">
+                ------------------------
+              </p>
+              <p className="rounded transition-all hover:bg-white/10">
+                ------------------------
+              </p>
+              <p className="rounded transition-all hover:bg-white/10">
+                ------------------------
+              </p>
+            </div>
+          </div>
+          <div className="right-0 hidden h-80 rounded-3xl border border-gray-300 bg-base-100/60 p-4 md:container lg:block lg:w-96">
+            dddddd
+          </div>
         </div>
       </div>
     </>

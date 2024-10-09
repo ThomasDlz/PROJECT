@@ -1,9 +1,12 @@
 import { Link } from "react-router-dom";
+import { FaCalendarDays } from "react-icons/fa6";
+import Calendar from "react-calendar";
+import "react-calendar/dist/Calendar.css";
 
 function Navbar() {
   return (
     <>
-      <div className="navbar md:container md:mx-auto bg-base-100">
+      <div className="navbar bg-base-100 md:container md:mx-auto">
         <div className="flex-1">
           <Link to="/" className="btn btn-ghost text-xl">
             PROJECT
@@ -12,13 +15,13 @@ function Navbar() {
         <div className="navbar-center hidden lg:flex">
           <ul className="menu menu-horizontal px-1">
             <li>
-              <Link to="/fixtures">Matchs</Link>
+              <Link to="/fixtures">MATCHS</Link>
             </li>
             <li>
-              <Link to="/rankings">Classement</Link>
+              <Link to="/rankings">CLASSEMENT</Link>
             </li>
             <li>
-              <Link to="/transferts">Transferts</Link>
+              <Link to="/transferts">TRANSFERTS</Link>
             </li>
           </ul>
         </div>
@@ -30,40 +33,35 @@ function Navbar() {
               className="input input-bordered w-40 md:w-auto"
             />
           </div>
-          <div className="dropdown dropdown-end">
+
+          <div className="btn btn-circle btn-ghost lg:hidden">
             <div
-              tabIndex={0}
-              role="button"
-              className="btn btn-ghost btn-circle avatar"
+              className="btn btn-circle"
+              onClick={() => document.getElementById("my_modal_5").showModal()}
             >
-              <div className="w-10 rounded-full">
-                <img
-                  alt="Tailwind CSS Navbar component"
-                  src="https://media.istockphoto.com/id/1978312303/fr/vectoriel/someones-round-icon-isolated-vector-illustration.jpg?s=612x612&w=0&k=20&c=upLiGdtxi9FMaldZCGwisDtT5i8odl1Qpqtdmvj8J6w="
-                />
-              </div>
+              <FaCalendarDays className="text-2xl" />
             </div>
-            <ul
-              tabIndex={0}
-              className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow"
-            >
-              <li>
-                <a className="justify-between">Mon compte</a>
-              </li>
-              <li>
-                <a>Paramètres</a>
-              </li>
-              <li>
-                <a>Se deconnecter</a>
-              </li>
-            </ul>
+            <dialog id="my_modal_5" className="modal modal-top sm:modal-middle">
+              <div className="modal-box">
+                <h3 className="mb-4 text-lg font-bold">
+                  Selectionnez une date !
+                </h3>
+                <Calendar className="h-full w-full rounded-3xl border-gray-300 bg-base-100/60 p-4" />
+                <div className="modal-action">
+                  <form method="dialog">
+                    {/* if there is a button in form, it will close the modal */}
+                    <button className="btn">Valider</button>
+                  </form>
+                </div>
+              </div>
+            </dialog>
           </div>
 
           <div className="dropdown dropdown-end">
             <div
               tabIndex={0}
               role="button"
-              className="btn btn-ghost btn-circle lg:hidden"
+              className="btn btn-circle btn-ghost lg:hidden"
             >
               <label className="btn btn-circle swap swap-rotate">
                 {/* this hidden checkbox controls the state */}
@@ -94,7 +92,7 @@ function Navbar() {
             </div>
             <ul
               tabIndex={0}
-              className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow"
+              className="menu dropdown-content menu-sm z-[1] mt-3 w-52 rounded-box bg-base-100 p-2 shadow"
             >
               <li>
                 <Link to="/fixtures">Matchs</Link>
@@ -104,6 +102,34 @@ function Navbar() {
               </li>
               <li>
                 <Link to="/transferts">Transferts</Link>
+              </li>
+            </ul>
+          </div>
+          <div className="dropdown dropdown-end">
+            <div
+              tabIndex={0}
+              role="button"
+              className="avatar btn btn-circle btn-ghost"
+            >
+              <div className="w-10 rounded-full">
+                <img
+                  alt="Tailwind CSS Navbar component"
+                  src="https://media.istockphoto.com/id/1978312303/fr/vectoriel/someones-round-icon-isolated-vector-illustration.jpg?s=612x612&w=0&k=20&c=upLiGdtxi9FMaldZCGwisDtT5i8odl1Qpqtdmvj8J6w="
+                />
+              </div>
+            </div>
+            <ul
+              tabIndex={0}
+              className="menu dropdown-content menu-sm z-[1] mt-3 w-52 rounded-box bg-base-100 p-2 shadow"
+            >
+              <li>
+                <a className="justify-between">Mon compte</a>
+              </li>
+              <li>
+                <a>Paramètres</a>
+              </li>
+              <li>
+                <a>Se deconnecter</a>
               </li>
             </ul>
           </div>
