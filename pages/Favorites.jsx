@@ -1,4 +1,4 @@
-function Fixtures() {
+function Favorites() {
   return (
     <>
       <div
@@ -13,4 +13,4 @@ function Fixtures() {
     </>
   );
 }
-export default Fixtures;
+export default Favorites;

@@ -3,7 +3,8 @@ import SharedLayout from "../layouts/SharedLayouts.jsx";
 import Home from "../pages/Home.jsx";
 import Rankings from "../pages/Rankings.jsx";
 import Fixtures from "../pages/Fixtures.jsx";
-import Transferts from "../pages/Transferts.jsx";
+import News from "../pages/News.jsx";
+import Favorites from "../pages/Favorites.jsx";
 import ErrorPage from "../pages/ErrorPage.jsx";
 
 function ReactRouter() {
@@ -26,8 +27,12 @@ function ReactRouter() {
           element: <Rankings />,
         },
         {
-          path: "/transferts",
-          element: <Transferts />,
+          path: "/news",
+          element: <News />,
+        },
+        {
+          path: "/favorites",
+          element: <Favorites />,
         },
       ],
     },

@@ -21,7 +21,10 @@ function Navbar() {
               <Link to="/rankings">CLASSEMENT</Link>
             </li>
             <li>
-              <Link to="/transferts">TRANSFERTS</Link>
+              <Link to="/news">ACTUALITÉ</Link>
+            </li>
+            <li>
+              <Link to="/favorites">FAVORIS</Link>
             </li>
           </ul>
         </div>
@@ -101,38 +104,87 @@ function Navbar() {
                 <Link to="/rankings">Classement</Link>
               </li>
               <li>
-                <Link to="/transferts">Transferts</Link>
+                <Link to="/news">Actualité</Link>
+              </li>
+              <li>
+                <Link to="/favorites">Favoris</Link>
               </li>
             </ul>
           </div>
-          <div className="dropdown dropdown-end">
-            <div
-              tabIndex={0}
-              role="button"
-              className="avatar btn btn-circle btn-ghost"
-            >
-              <div className="w-10 rounded-full">
-                <img
-                  alt="Tailwind CSS Navbar component"
-                  src="https://media.istockphoto.com/id/1978312303/fr/vectoriel/someones-round-icon-isolated-vector-illustration.jpg?s=612x612&w=0&k=20&c=upLiGdtxi9FMaldZCGwisDtT5i8odl1Qpqtdmvj8J6w="
-                />
+
+          <div
+            tabIndex={0}
+            role="button"
+            className="avatar btn btn-circle btn-ghost"
+            onClick={() => document.getElementById("my_modal_3").showModal()}
+          >
+            <div className="w-10 rounded-full">
+              <img
+                alt="Tailwind CSS Navbar component"
+                src="https://media.istockphoto.com/id/1978312303/fr/vectoriel/someones-round-icon-isolated-vector-illustration.jpg?s=612x612&w=0&k=20&c=upLiGdtxi9FMaldZCGwisDtT5i8odl1Qpqtdmvj8J6w="
+              />
+            </div>
+          </div>
+          <dialog id="my_modal_3" className="modal">
+            <div className="modal-box">
+              <form method="dialog">
+                {/* if there is a button in form, it will close the modal */}
+                <button className="btn btn-circle btn-ghost btn-sm absolute right-2 top-2 z-20">
+                  ✕
+                </button>
+              </form>
+              <div className="card card-side bg-base-100">
+                <figure>
+                  <img
+                    className="rounded-l-lg"
+                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT1yF8Z5YgApAyNccvM0BKWoTTQMX8bUZcUzA&s"
+                    alt="Movie"
+                  />
+                </figure>
+                <div className="card-body">
+                  <label className="input input-bordered flex items-center gap-2">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 16 16"
+                      fill="currentColor"
+                      className="h-4 w-4 opacity-70"
+                    >
+                      <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM12.735 14c.618 0 1.093-.561.872-1.139a6.002 6.002 0 0 0-11.215 0c-.22.578.254 1.139.872 1.139h9.47Z" />
+                    </svg>
+                    <input
+                      type="text"
+                      className="grow"
+                      placeholder="Username"
+                    />
+                  </label>
+                  <label className="input input-bordered flex items-center gap-2">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 16 16"
+                      fill="currentColor"
+                      className="h-4 w-4 opacity-70"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M14 6a4 4 0 0 1-4.899 3.899l-1.955 1.955a.5.5 0 0 1-.353.146H5v1.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-2.293a.5.5 0 0 1 .146-.353l3.955-3.955A4 4 0 1 1 14 6Zm-4-2a.75.75 0 0 0 0 1.5.5.5 0 0 1 .5.5.75.75 0 0 0 1.5 0 2 2 0 0 0-2-2Z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                    <input
+                      type="password"
+                      className="grow"
+                      placeholder="******"
+                    />
+                  </label>
+                  <div className="card-actions justify-end">
+                    <button className="btn btn-primary mt-2">Connexion</button>
+                    <p>Pas encore de compte ?</p>
+                    <a href="">S{"'"}inscrire</a>
+                  </div>
+                </div>
               </div>
             </div>
-            <ul
-              tabIndex={0}
-              className="menu dropdown-content menu-sm z-[1] mt-3 w-52 rounded-box bg-base-100 p-2 shadow"
-            >
-              <li>
-                <a className="justify-between">Mon compte</a>
-              </li>
-              <li>
-                <a>Paramètres</a>
-              </li>
-              <li>
-                <a>Se deconnecter</a>
-              </li>
-            </ul>
-          </div>
+          </dialog>
         </div>
       </div>
     </>

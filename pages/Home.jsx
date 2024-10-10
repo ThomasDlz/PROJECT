@@ -6,19 +6,19 @@ var myHeaders = new Headers();
 myHeaders.append("x-rapidapi-key", "8ae98bda88d2c921eca991683ada6ce7");
 myHeaders.append("x-rapidapi-host", "v3.football.api-sports.io");
 
-var requestOptions = {
-  method: "GET",
-  headers: myHeaders,
-  redirect: "follow",
-};
+// var requestOptions = {
+//   method: "GET",
+//   headers: myHeaders,
+//   redirect: "follow",
+// };
 
-fetch(
-  "https://v3.football.api-sports.io/players?id=276&season=2021",
-  requestOptions,
-)
-  .then((response) => response.text())
-  .then((result) => console.log(result))
-  .catch((error) => console.log("error", error));
+// fetch(
+//   "https://v3.football.api-sports.io/players?id=276&season=2021",
+//   requestOptions,
+// )
+//   .then((response) => response.text())
+//   .then((result) => console.log(result))
+//   .catch((error) => console.log("error", error));
 
 function Home() {
   const [value, setValue] = useState(new Date());
@@ -34,7 +34,7 @@ function Home() {
         <div className="none hero-overlay bg-opacity-60"></div>
         <div className="flex h-full w-full p-4 md:container md:mx-auto">
           <Calendar
-            className="hidden h-1/3 rounded-3xl border-gray-300 bg-base-100/60 lg:block lg:w-72 xl:w-80 2xl:w-1/4"
+            className="hidden h-72 rounded-3xl border-gray-300 bg-base-100/60 lg:block lg:w-72 xl:w-80 2xl:w-1/4"
             onChange={setValue}
             value={value}
           />
