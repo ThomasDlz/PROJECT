@@ -25,20 +25,23 @@ function Home() {
   return (
     <>
       <div
-        className="hero min-h-[calc(100vh-4.3rem)] place-items-start"
+        className="hero h-screen w-full place-items-start lg:h-full"
         style={{
           backgroundImage:
             "url(https://lelisia.com/cdn/shop/products/night-soccer-stadium-render.webp?v=1699408348)",
         }}
       >
         <div className="none hero-overlay bg-opacity-60"></div>
-        <div className="flex h-full w-full p-4 md:container md:mx-auto">
-          <Calendar
-            className="hidden h-72 rounded-3xl border-gray-300 bg-base-100/60 lg:block lg:w-72 xl:w-80 2xl:w-1/4"
-            onChange={setValue}
-            value={value}
-          />
-          <div className="lg:w-1/1 ml-4 mr-4 h-3/4 w-full rounded-3xl border border-gray-300 bg-base-100/60 p-4 md:w-full lg:min-w-96">
+
+        <div className="h-full w-full pb-4 pt-4 md:container md:mx-auto lg:grid lg:grid-cols-7 lg:grid-rows-3 lg:gap-4">
+          <div className="col-start-1 col-end-3">
+            <Calendar
+              className="hidden h-full w-full rounded-3xl border-gray-300 bg-base-100/60 lg:block"
+              onChange={setValue}
+              value={value}
+            />
+          </div>
+          <div className="h-full w-full rounded-3xl border border-gray-300 bg-base-100/60 p-4 lg:col-start-3 lg:col-end-6 lg:row-start-1 lg:row-end-3 lg:min-w-96">
             <h3 className="text-center text-3xl">MATCHS DU JOUR</h3>
             <div className="divider divider-success"></div>
             <div>
@@ -53,8 +56,18 @@ function Home() {
               </p>
             </div>
           </div>
-          <div className="right-0 hidden h-80 rounded-3xl border border-gray-300 bg-base-100/60 p-4 md:container lg:block lg:w-96">
-            dddddd
+
+          <div className="col-start-6 col-end-8 hidden rounded-3xl border border-gray-300 bg-base-100/60 p-4 lg:block">
+            3
+          </div>
+          <div className="col-start-1 col-end-3 row-start-2 row-end-4 hidden rounded-3xl border border-gray-300 bg-base-100/60 p-4 lg:block">
+            4
+          </div>
+          <div className="col-start-3 col-end-6 hidden h-full rounded-3xl border border-gray-300 bg-base-100/60 p-4 md:container lg:block">
+            5
+          </div>
+          <div className="col-start-6 col-end-8 row-start-2 row-end-4 hidden rounded-3xl border border-gray-300 bg-base-100/60 p-4 lg:block">
+            6
           </div>
         </div>
       </div>
