@@ -15,10 +15,7 @@ function Navbar() {
         <div className="navbar-center hidden lg:flex">
           <ul className="menu menu-horizontal px-1">
             <li>
-              <Link to="/fixtures">MATCHS</Link>
-            </li>
-            <li>
-              <Link to="/rankings">CLASSEMENT</Link>
+              <Link to="/competitions">COMPÉTITIONS</Link>
             </li>
             <li>
               <Link to="/news">ACTUALITÉ</Link>
@@ -98,10 +95,7 @@ function Navbar() {
               className="menu dropdown-content menu-sm z-[1] mt-3 w-52 rounded-box bg-base-100 p-2 shadow"
             >
               <li>
-                <Link to="/fixtures">Matchs</Link>
-              </li>
-              <li>
-                <Link to="/rankings">Classement</Link>
+                <Link to="/competitions">Compétitions</Link>
               </li>
               <li>
                 <Link to="/news">Actualité</Link>
@@ -154,7 +148,7 @@ function Navbar() {
                     <input
                       type="text"
                       className="grow"
-                      placeholder="Username"
+                      placeholder="Identifiants"
                     />
                   </label>
                   <label className="input input-bordered flex items-center gap-2">
@@ -173,7 +167,7 @@ function Navbar() {
                     <input
                       type="password"
                       className="grow"
-                      placeholder="******"
+                      placeholder="********"
                     />
                   </label>
                   <div className="card-actions justify-end">

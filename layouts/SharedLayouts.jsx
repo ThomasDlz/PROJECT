@@ -8,7 +8,9 @@ function SharedLayout() {
   if (navigation.state === "loading") {
     return (
       <main>
-        <div>Chargement...</div>
+        <div>
+          <span className="loading loading-spinner text-success"></span>
+        </div>
       </main>
     );
   }

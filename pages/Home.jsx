@@ -25,7 +25,7 @@ function Home() {
   return (
     <>
       <div
-        className="hero h-screen w-full place-items-start lg:h-full"
+        className="hero min-h-[calc(100vh-4.3rem)] w-full place-items-start"
         style={{
           backgroundImage:
             "url(https://lelisia.com/cdn/shop/products/night-soccer-stadium-render.webp?v=1699408348)",
@@ -33,15 +33,15 @@ function Home() {
       >
         <div className="none hero-overlay bg-opacity-60"></div>
 
-        <div className="h-full w-full pb-4 pt-4 md:container md:mx-auto lg:grid lg:grid-cols-7 lg:grid-rows-3 lg:gap-4">
-          <div className="col-start-1 col-end-3">
+        <div className="flex h-full w-full pb-4 pt-4 md:container md:mx-auto lg:grid lg:h-[calc(100vh-4.3rem)] lg:grid-cols-7 lg:grid-rows-3 lg:gap-4">
+          <div className="col-start-1 col-end-3 h-full">
             <Calendar
-              className="hidden h-full w-full rounded-3xl border-gray-300 bg-base-100/60 lg:block"
+              className="hidden h-full w-full overflow-y-hidden rounded-3xl border-gray-300 bg-base-100/60 lg:block"
               onChange={setValue}
               value={value}
             />
           </div>
-          <div className="h-full w-full rounded-3xl border border-gray-300 bg-base-100/60 p-4 lg:col-start-3 lg:col-end-6 lg:row-start-1 lg:row-end-3 lg:min-w-96">
+          <div className="h- w-full rounded-3xl border border-gray-300 bg-base-100/60 p-4 lg:col-start-3 lg:col-end-6 lg:row-start-1 lg:row-end-3 lg:min-w-96">
             <h3 className="text-center text-3xl">MATCHS DU JOUR</h3>
             <div className="divider divider-success"></div>
             <div>
@@ -58,16 +58,20 @@ function Home() {
           </div>
 
           <div className="col-start-6 col-end-8 hidden rounded-3xl border border-gray-300 bg-base-100/60 p-4 lg:block">
-            3
+            <h3 className="text-center text-3xl">zzzzzzzzzzzz</h3>
+            <div className="divider divider-success"></div>
           </div>
           <div className="col-start-1 col-end-3 row-start-2 row-end-4 hidden rounded-3xl border border-gray-300 bg-base-100/60 p-4 lg:block">
-            4
+            <h3 className="text-center text-3xl">ttttttttttttt</h3>
+            <div className="divider divider-success"></div>
           </div>
           <div className="col-start-3 col-end-6 hidden h-full rounded-3xl border border-gray-300 bg-base-100/60 p-4 md:container lg:block">
-            5
+            <h3 className="text-center text-3xl">ooooooooooooo</h3>
+            <div className="divider divider-success"></div>
           </div>
           <div className="col-start-6 col-end-8 row-start-2 row-end-4 hidden rounded-3xl border border-gray-300 bg-base-100/60 p-4 lg:block">
-            6
+            <h3 className="text-center text-3xl">kkkkkkkkkkkk</h3>
+            <div className="divider divider-success"></div>
           </div>
         </div>
       </div>

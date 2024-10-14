@@ -1,11 +1,10 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import SharedLayout from "../layouts/SharedLayouts.jsx";
 import Home from "../pages/Home.jsx";
-import Rankings from "../pages/Rankings.jsx";
-import Fixtures from "../pages/Fixtures.jsx";
 import News from "../pages/News.jsx";
 import Favorites from "../pages/Favorites.jsx";
 import ErrorPage from "../pages/ErrorPage.jsx";
+import Competitions from "../pages/Competitions.jsx";
 
 function ReactRouter() {
   const router = createBrowserRouter([
@@ -19,12 +18,8 @@ function ReactRouter() {
           element: <Home />,
         },
         {
-          path: "/fixtures",
-          element: <Fixtures />,
-        },
-        {
-          path: "/rankings",
-          element: <Rankings />,
+          path: "/competitions",
+          element: <Competitions />,
         },
         {
           path: "/news",

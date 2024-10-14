@@ -1,4 +1,4 @@
-const Rankings = () => {
+const Competitions = () => {
   return (
     <div
       className="hero min-h-[calc(100vh-4.3rem)] place-items-start"
@@ -24,10 +24,13 @@ const Rankings = () => {
             <option>2022</option>
           </select>
         </div>
-        <div className="ml-4 hidden h-full w-full rounded-3xl border border-gray-300 bg-base-100/60 p-4 md:container lg:block lg:w-1/4 2xl:w-1/4"></div>
+        <div className="ml-4 hidden h-full w-full rounded-3xl border border-gray-300 bg-base-100/60 p-4 md:container lg:block lg:w-1/4 2xl:w-1/4">
+          <h3 className="text-center text-3xl">zzzzzzzzzzzz</h3>
+          <div className="divider divider-success"></div>
+        </div>
       </div>
     </div>
   );
 };
 
-export default Rankings;
+export default Competitions;
