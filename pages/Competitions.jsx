@@ -1,4 +1,48 @@
+import { useEffect, useState } from "react";
+
 const Competitions = () => {
+  const [rankings, setRankings] = useState(null);
+
+  useEffect(() => {
+    var myHeaders = new Headers();
+    myHeaders.append("x-rapidapi-key", "8ae98bda88d2c921eca991683ada6ce7");
+    myHeaders.append("x-rapidapi-host", "v3.football.api-sports.io");
+
+    var requestOptions = {
+      method: "GET",
+      headers: myHeaders,
+      redirect: "follow",
+    };
+
+    fetch(
+      "https://v3.football.api-sports.io/standings?league=39&season=2022",
+      requestOptions,
+    )
+      .then((response) => response.json())
+      .then((result) => {
+        if (result.response && result.response.length > 0) {
+          const league = result.response[0].league;
+          const standings = result.response[0].league.standings[0];
+          console.log(standings);
+
+          if (league && standings) {
+            setRankings({
+              name: league.name,
+              country: league.country,
+              logo: league.logo,
+              flag: league.flag,
+              teams: standings,
+            });
+          } else {
+            console.error("League or standings data is missing");
+          }
+        } else {
+          console.error("No response data found");
+        }
+      })
+      .catch((error) => console.log("error", error));
+  }, []);
+
   return (
     <div
       className="hero min-h-[calc(100vh-4.3rem)] place-items-start"
@@ -11,21 +55,83 @@ const Competitions = () => {
       <div className="flex h-full w-full p-4 md:container md:mx-auto">
         <div className="h-full w-full rounded-3xl border border-gray-300 bg-base-100/60 p-4 md:container lg:block lg:w-3/4 2xl:w-3/4">
           <select className="select select-bordered w-3/4">
-            <option selected disabled>
-              Selectionner un championnat/tournoi
-            </option>
             <option>Premier League</option>
             <option>Ligue 1</option>
           </select>
 
           <select className="select select-bordered ml-4 w-1/5">
-            <option selected>2020</option>
+            <option>2020</option>
             <option>2021</option>
             <option>2022</option>
           </select>
+
+          {rankings ? (
+            <div className="overflow-x-auto">
+              <div className="flex p-4">
+                <img
+                  className="w-8 rounded-xl"
+                  src={rankings.logo}
+                  alt={rankings.logo}
+                />
+                <h2 className="p-2 text-xl uppercase text-gray-300">
+                  {rankings.name}
+                </h2>
+                <img className="w-8" src={rankings.flag} alt={rankings.flag} />
+                <p className="p-2">({rankings.country})</p>
+              </div>
+              <table className="table table-xs bg-base-100/50 text-center text-gray-50">
+                <thead className="text-gray-400">
+                  <tr>
+                    <th></th>
+                    <th>Team</th>
+                    <th>P</th>
+                    <th>MP</th>
+                    <th>W</th>
+                    <th>D</th>
+                    <th>L</th>
+                    <th>G</th>
+                    <th>FORM</th>
+                  </tr>
+                </thead>
+
+                <tbody className="text-gray-400">
+                  {rankings.teams && rankings.teams.length > 0 ? (
+                    rankings.teams.map((team, index) => (
+                      <tr key={team.team.id} className="hover">
+                        <th>{index + 1}</th>
+                        <th className="text-start">
+                          <img
+                            className="inline-block h-6 w-6 rounded-full"
+                            src={team.team.logo}
+                            alt={team.team.name}
+                          />{" "}
+                          {team.team.name}
+                        </th>
+                        <th>{team.points}</th>
+                        <th>{team.all.played}</th>
+                        <th className="text-success">{team.all.win}</th>
+                        <th className="text-primary">{team.all.draw}</th>
+                        <th className="text-error">{team.all.lose}</th>
+                        <th>
+                          {team.all.goals.for}-{team.all.goals.against}
+                        </th>
+                        <th>{team.form}</th>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td colSpan="9">Pas d{'"'}equipe disponible</td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
+            </div>
+          ) : (
+            <span className="loading loading-spinner mx-auto flex w-48 text-success"></span>
+          )}
         </div>
         <div className="ml-4 hidden h-full w-full rounded-3xl border border-gray-300 bg-base-100/60 p-4 md:container lg:block lg:w-1/4 2xl:w-1/4">
-          <h3 className="text-center text-3xl">zzzzzzzzzzzz</h3>
+          <h3 className="text-center text-3xl">Meilleurs championnats</h3>
           <div className="divider divider-success"></div>
         </div>
       </div>

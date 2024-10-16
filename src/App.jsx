@@ -5,6 +5,7 @@ import News from "../pages/News.jsx";
 import Favorites from "../pages/Favorites.jsx";
 import ErrorPage from "../pages/ErrorPage.jsx";
 import Competitions from "../pages/Competitions.jsx";
+import Register from "../pages/Register.jsx";
 
 function ReactRouter() {
   const router = createBrowserRouter([
@@ -28,6 +29,10 @@ function ReactRouter() {
         {
           path: "/favorites",
           element: <Favorites />,
+        },
+        {
+          path: "/register",
+          element: <Register />,
         },
       ],
     },

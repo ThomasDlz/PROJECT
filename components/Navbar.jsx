@@ -171,9 +171,13 @@ function Navbar() {
                     />
                   </label>
                   <div className="card-actions justify-end">
-                    <button className="btn btn-primary mt-2">Connexion</button>
-                    <p>Pas encore de compte ?</p>
-                    <a href="/rankings">S{"'"}inscrire</a>
+                    <button className="btn btn-success mt-2">Connexion</button>
+                    <div className="flex">
+                      <p className="mr-2">Pas encore de compte ?</p>
+                      <a className="text-primary" href="/register">
+                        S{"'"}inscrire
+                      </a>
+                    </div>
                   </div>
                 </div>
               </div>
