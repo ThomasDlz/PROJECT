@@ -19,7 +19,7 @@ function Home() {
     };
 
     fetch(
-      "https://v3.football.api-sports.io/players?id=350&season=2021",
+      "https://v3.football.api-sports.io/players?id=292&season=2022",
       requestOptions,
     )
       .then((response) => response.json())

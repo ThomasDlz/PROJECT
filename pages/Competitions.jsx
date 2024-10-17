@@ -2,6 +2,11 @@ import { useEffect, useState } from "react";
 
 const Competitions = () => {
   const [rankings, setRankings] = useState(null);
+  const [topscorers, setTopscorers] = useState([]);
+  const [topassists, setTopassists] = useState([]);
+  const [season, setSeason] = useState("2022");
+  const [leagues, setLeagues] = useState([]); // State pour stocker les ligues
+  const [selectedLeague, setSelectedLeague] = useState(null); // State pour la ligue sélectionnée
 
   useEffect(() => {
     var myHeaders = new Headers();
@@ -14,34 +19,102 @@ const Competitions = () => {
       redirect: "follow",
     };
 
-    fetch(
-      "https://v3.football.api-sports.io/standings?league=39&season=2022",
-      requestOptions,
-    )
+    // Fetch leagues with id <= 200
+    fetch("https://v3.football.api-sports.io/leagues", requestOptions)
       .then((response) => response.json())
       .then((result) => {
-        if (result.response && result.response.length > 0) {
-          const league = result.response[0].league;
-          const standings = result.response[0].league.standings[0];
-          console.log(standings);
-
-          if (league && standings) {
-            setRankings({
-              name: league.name,
-              country: league.country,
-              logo: league.logo,
-              flag: league.flag,
-              teams: standings,
-            });
-          } else {
-            console.error("League or standings data is missing");
-          }
-        } else {
-          console.error("No response data found");
-        }
+        const filteredLeagues = result.response.filter(
+          (league) => league.league.id <= 200,
+        );
+        setLeagues(
+          filteredLeagues.map((league) => ({
+            id: league.league.id,
+            name: league.league.name,
+          })),
+        );
       })
       .catch((error) => console.log("error", error));
-  }, []);
+
+    if (selectedLeague) {
+      // Fetch standings for the selected league
+      fetch(
+        `https://v3.football.api-sports.io/standings?league=${selectedLeague}&season=${season}`,
+        requestOptions,
+      )
+        .then((response) => response.json())
+        .then((result) => {
+          if (result.response && result.response.length > 0) {
+            const league = result.response[0].league;
+            const standings = result.response[0].league.standings[0];
+
+            if (league && standings) {
+              setRankings({
+                name: league.name,
+                country: league.country,
+                logo: league.logo,
+                flag: league.flag,
+                teams: standings,
+              });
+            } else {
+              console.error("League or standings data is missing");
+            }
+          } else {
+            console.error("No response data found");
+          }
+        })
+        .catch((error) => console.log("error", error));
+
+      // Fetch topscorers for the selected league
+      fetch(
+        `https://v3.football.api-sports.io/players/topscorers?league=${selectedLeague}&season=${season}`,
+        requestOptions,
+      )
+        .then((response) => response.json())
+        .then((result) => {
+          if (result.response && result.response.length > 0) {
+            const players = result.response.slice(0, 3).map((item) => ({
+              name: item.player.name,
+              teamLogo: item.statistics[0].team.logo,
+              goals: item.statistics[0].goals.total,
+            }));
+
+            setTopscorers(players);
+          } else {
+            console.error("No response data found");
+          }
+        })
+        .catch((error) => console.log("error", error));
+
+      // Fetch topassists for the selected league
+      fetch(
+        `https://v3.football.api-sports.io/players/topassists?league=${selectedLeague}&season=${season}`,
+        requestOptions,
+      )
+        .then((response) => response.json())
+        .then((result) => {
+          if (result.response && result.response.length > 0) {
+            const players = result.response.slice(0, 3).map((item) => ({
+              name: item.player.name,
+              teamLogo: item.statistics[0].team.logo,
+              assists: item.statistics[0].goals.assists,
+            }));
+
+            setTopassists(players);
+          } else {
+            console.error("No response data found");
+          }
+        })
+        .catch((error) => console.log("error", error));
+    }
+  }, [season, selectedLeague]);
+
+  const handleSeasonChange = (e) => {
+    setSeason(e.target.value);
+  };
+
+  const handleLeagueChange = (e) => {
+    setSelectedLeague(e.target.value);
+  };
 
   return (
     <div
@@ -54,17 +127,31 @@ const Competitions = () => {
       <div className="none hero-overlay bg-opacity-60"></div>
       <div className="flex h-full w-full p-4 md:container md:mx-auto">
         <div className="h-full w-full rounded-3xl border border-gray-300 bg-base-100/60 p-4 md:container lg:block lg:w-3/4 2xl:w-3/4">
-          <select className="select select-bordered w-3/4">
-            <option>Premier League</option>
-            <option>Ligue 1</option>
+          {/* Select for leagues */}
+          <select
+            onChange={handleLeagueChange}
+            className="select select-bordered w-3/4"
+          >
+            <option value="">Sélectionnez une ligue</option>
+            {leagues.map((league) => (
+              <option key={league.id} value={league.id}>
+                {league.name}
+              </option>
+            ))}
           </select>
 
-          <select className="select select-bordered ml-4 w-1/5">
-            <option>2020</option>
-            <option>2021</option>
-            <option>2022</option>
+          {/* Select for season */}
+          <select
+            onChange={handleSeasonChange}
+            value={season}
+            className="select select-bordered ml-4 w-1/5"
+          >
+            <option value="2020">2020</option>
+            <option value="2021">2021</option>
+            <option value="2022">2022</option>
           </select>
 
+          {/* Rankings table */}
           {rankings ? (
             <div className="overflow-x-auto">
               <div className="flex p-4">
@@ -120,7 +207,7 @@ const Competitions = () => {
                     ))
                   ) : (
                     <tr>
-                      <td colSpan="9">Pas d{'"'}equipe disponible</td>
+                      <td colSpan="9">Pas d{"'"}équipe disponible</td>
                     </tr>
                   )}
                 </tbody>
@@ -130,9 +217,49 @@ const Competitions = () => {
             <span className="loading loading-spinner mx-auto flex w-48 text-success"></span>
           )}
         </div>
+
         <div className="ml-4 hidden h-full w-full rounded-3xl border border-gray-300 bg-base-100/60 p-4 md:container lg:block lg:w-1/4 2xl:w-1/4">
-          <h3 className="text-center text-3xl">Meilleurs championnats</h3>
+          <h3 className="text-center text-3xl">Meilleurs buteurs</h3>
           <div className="divider divider-success"></div>
+          <ul>
+            {topscorers.length > 0 ? (
+              topscorers.map((player, index) => (
+                <li className="flex p-1" key={index}>
+                  <img
+                    className="size-6"
+                    src={player.teamLogo}
+                    alt={player.name}
+                  />
+                  <p className="pl-2">
+                    {player.name} - {player.goals} buts
+                  </p>
+                </li>
+              ))
+            ) : (
+              <p>Chargement des meilleurs buteurs...</p>
+            )}
+          </ul>
+
+          <h3 className="mt-4 text-center text-3xl">Meilleurs passeurs</h3>
+          <div className="divider divider-success"></div>
+          <ul>
+            {topassists.length > 0 ? (
+              topassists.map((player, index) => (
+                <li className="flex p-1" key={index}>
+                  <img
+                    className="size-6"
+                    src={player.teamLogo}
+                    alt={player.name}
+                  />
+                  <p className="pl-2">
+                    {player.name} - {player.assists} passes décisives
+                  </p>
+                </li>
+              ))
+            ) : (
+              <p>Chargement des meilleurs passeurs...</p>
+            )}
+          </ul>
         </div>
       </div>
     </div>
