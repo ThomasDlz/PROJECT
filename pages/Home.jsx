@@ -4,45 +4,61 @@ import "react-calendar/dist/Calendar.css";
 
 function Home() {
   const [value, setValue] = useState(new Date());
-
+  const [fixtures, setFixtures] = useState(null);
   const [playerData, setPlayerData] = useState(null);
 
   useEffect(() => {
-    var myHeaders = new Headers();
-    myHeaders.append("x-rapidapi-key", "8ae98bda88d2c921eca991683ada6ce7");
-    myHeaders.append("x-rapidapi-host", "v3.football.api-sports.io");
+    if (value) {
+      // Formater la date sélectionnée en 'YYYY-MM-DD'
+      const formattedDate = value.toISOString().split("T")[0];
 
-    var requestOptions = {
-      method: "GET",
-      headers: myHeaders,
-      redirect: "follow",
-    };
+      var myHeaders = new Headers();
+      myHeaders.append("x-rapidapi-key", "8ae98bda88d2c921eca991683ada6ce7");
+      myHeaders.append("x-rapidapi-host", "v3.football.api-sports.io");
 
-    fetch(
-      "https://v3.football.api-sports.io/players?id=292&season=2022",
-      requestOptions,
-    )
-      .then((response) => response.json())
-      .then((result) => {
-        const player = result.response[0].player;
-        const statistics = result.response[0].statistics[0];
-        console.log(result);
+      var requestOptions = {
+        method: "GET",
+        headers: myHeaders,
+        redirect: "follow",
+      };
 
-        setPlayerData({
-          name: `${player.firstname} ${player.lastname}`,
-          age: player.age,
-          nationality: player.nationality,
-          photo: player.photo,
-          position: statistics.games.position,
-          team: statistics.team.name,
-          goals: statistics.goals.total,
-          saves: statistics.goals.saves,
-          tackle: statistics.tackles.total,
-          interceptions: statistics.tackles.interceptions,
-        });
-      })
-      .catch((error) => console.log("error", error));
-  }, []);
+      fetch(
+        "https://v3.football.api-sports.io/players?id=292&season=2022",
+        requestOptions,
+      )
+        .then((response) => response.json())
+        .then((result) => {
+          const player = result.response[0].player;
+          const statistics = result.response[0].statistics[0];
+          console.log(result);
+
+          setPlayerData({
+            name: `${player.firstname} ${player.lastname}`,
+            age: player.age,
+            nationality: player.nationality,
+            photo: player.photo,
+            position: statistics.games.position,
+            team: statistics.team.name,
+            goals: statistics.goals.total,
+            saves: statistics.goals.saves,
+            tackle: statistics.tackles.total,
+            interceptions: statistics.tackles.interceptions,
+          });
+        })
+        .catch((error) => console.log("error", error));
+
+      fetch(
+        `https://v3.football.api-sports.io/fixtures?date=${formattedDate}`,
+        requestOptions,
+      )
+        .then((response) => response.json())
+        .then((result) => {
+          console.log(result);
+          setFixtures(result.response);
+        })
+        .catch((error) => console.log("error", error));
+    }
+  }, [value]);
 
   return (
     <>
@@ -67,15 +83,24 @@ function Home() {
             <h3 className="text-center text-3xl">MATCHS DU JOUR</h3>
             <div className="divider divider-success"></div>
             <div>
-              <p className="rounded transition-all hover:bg-white/10">
-                ------------------------
-              </p>
-              <p className="rounded transition-all hover:bg-white/10">
-                ------------------------
-              </p>
-              <p className="rounded transition-all hover:bg-white/10">
-                ------------------------
-              </p>
+              {fixtures ? (
+                fixtures.map((fixture) => (
+                  <div
+                    key={fixture.fixture.id}
+                    className="rounded transition-all hover:bg-white/10"
+                  >
+                    <p>
+                      {fixture.teams.home.name} vs {fixture.teams.away.name}
+                    </p>
+                    <p>
+                      Heure :{" "}
+                      {new Date(fixture.fixture.date).toLocaleTimeString()}
+                    </p>
+                  </div>
+                ))
+              ) : (
+                <p>Aucun match disponible pour cette date.</p>
+              )}
             </div>
           </div>
 
