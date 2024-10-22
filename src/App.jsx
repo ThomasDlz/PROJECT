@@ -5,7 +5,9 @@ import News from "../pages/News.jsx";
 import Favorites from "../pages/Favorites.jsx";
 import ErrorPage from "../pages/ErrorPage.jsx";
 import Competitions from "../pages/Competitions.jsx";
+import { loader as InfoLoader } from "../pages/Informations.jsx";
 import Register from "../pages/Register.jsx";
+import Informations from "../pages/Informations.jsx";
 
 function ReactRouter() {
   const router = createBrowserRouter([
@@ -17,6 +19,11 @@ function ReactRouter() {
         {
           index: true,
           element: <Home />,
+        },
+        {
+          path: "informations/:id",
+          element: <Informations />,
+          loader: InfoLoader,
         },
         {
           path: "/competitions",
