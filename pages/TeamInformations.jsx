@@ -46,7 +46,7 @@ export const loader = async ({ params }) => {
   }
 };
 
-function Informations() {
+function TeamInformations() {
   const { teamData, playersData, coachData, leagueData, statsData } =
     useLoaderData();
 
@@ -78,6 +78,7 @@ function Informations() {
           />
           <h3>{teamData.response[0].team.name}</h3>
           <h3>Création : {teamData.response[0].team.founded}</h3>
+          <h3>Pays : {teamData.response[0].team.country}</h3>
           <h3>Championnat : {leagueData.response[0].league.name}</h3>
           <h3>
             Entraineur : {coachData.response[0].firstname}{" "}
@@ -102,7 +103,30 @@ function Informations() {
             Plus longue série de victoire :{" "}
             {statsData.response[0].biggest.streak.wins}
           </h3>
+          <h3>
+            Plus longue série de défaite :{" "}
+            {statsData.response[0].biggest.streak.loses}
+          </h3>
+          <h3>
+            Buts marqués cette saison :{" "}
+            {statsData.response[0].goals.for.total.total}
+          </h3>
+          <h3>
+            Moyenne de buts marqués par match :{" "}
+            {statsData.response[0].goals.for.average.total}
+          </h3>
+          <h3>
+            Buts encaissés cette saison :{" "}
+            {statsData.response[0].goals.against.total.total}
+          </h3>
+          <h3>
+            Moyenne de buts encaissés par match :{" "}
+            {statsData.response[0].goals.against.average.total}
+          </h3>
           <h3>Clean Sheet : {statsData.response[0].clean_sheet.total}</h3>
+          <h3>
+            Composition préferé : {statsData.response[0].lineups[0].formation}
+          </h3>
           <div className="absolute right-0 top-0 border">
             <img
               className="max-w-80"
@@ -129,4 +153,4 @@ function Informations() {
   );
 }
 
-export default Informations;
+export default TeamInformations;
