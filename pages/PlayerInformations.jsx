@@ -132,7 +132,7 @@ function PlayerInformations() {
                 ))}
               </ul>
             ) : (
-              <p>Aucune carrière disponible.</p>
+              <p>Aucun transfert disponible.</p>
             )}
           </div>
         </div>

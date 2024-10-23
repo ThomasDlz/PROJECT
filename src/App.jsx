@@ -8,10 +8,12 @@ import Competitions from "../pages/Competitions.jsx";
 import Register from "../pages/Register.jsx";
 import TeamInformations from "../pages/TeamInformations.jsx";
 import PlayerInformations from "../pages/PlayerInformations.jsx";
+import CoachInformations from "../pages/CoachInformations.jsx";
+import FixtureInformations from "../pages/FixtureInformations.jsx";
 import { loader as TeamLoader } from "../pages/TeamInformations.jsx";
 import { loader as PlayerLoader } from "../pages/PlayerInformations.jsx";
 import { loader as CoachLoader } from "../pages/CoachInformations.jsx";
-import CoachInformations from "../pages/CoachInformations.jsx";
+import { loader as FixtureLoader } from "../pages/FixtureInformations.jsx";
 
 function ReactRouter() {
   const router = createBrowserRouter([
@@ -38,6 +40,11 @@ function ReactRouter() {
           path: "coach-informations/:id",
           element: <CoachInformations />,
           loader: CoachLoader,
+        },
+        {
+          path: "fixture-informations/:id",
+          element: <FixtureInformations />,
+          loader: FixtureLoader,
         },
         {
           path: "/competitions",
