@@ -40,7 +40,7 @@ export const loader = async ({ params }) => {
 };
 
 function PlayerInformations() {
-  const { playerData, statsData } = useLoaderData();
+  const { playerData, statsData, transfersData } = useLoaderData();
 
   return (
     <div
@@ -110,7 +110,30 @@ function PlayerInformations() {
           </div>
           <div>
             <h3>Historique de transfert</h3>
-            <h3></h3>
+            {transfersData.response[0].transfers &&
+            transfersData.response[0].transfers.length > 0 ? (
+              <ul>
+                {transfersData.response[0].transfers.map((transfer, index) => (
+                  <li key={index} className="mb-4">
+                    <p>Arrivé : {transfer.teams.in.name}</p>
+                    <img
+                      src={transfer.teams.in.logo}
+                      alt={`${transfer.teams.in.name} logo`}
+                      className="mr-2 inline-block h-8 w-8"
+                    />
+                    <p>Départ : {transfer.teams.out.name}</p>
+                    <img
+                      src={transfer.teams.out.logo}
+                      alt={`${transfer.teams.in.name} logo`}
+                      className="mr-2 inline-block h-8 w-8"
+                    />
+                    <p> {transfer.date} </p>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p>Aucune carrière disponible.</p>
+            )}
           </div>
         </div>
 

@@ -149,7 +149,9 @@ function Home() {
                               src={fixture.teams.home.logo}
                               alt={fixture.teams.home.name}
                             />
-                            <Link to={`/informations/${fixture.teams.home.id}`}>
+                            <Link
+                              to={`/team-informations/${fixture.teams.home.id}`}
+                            >
                               {fixture.teams.home.name}
                             </Link>
                             <p className="absolute right-2">
@@ -162,7 +164,9 @@ function Home() {
                               src={fixture.teams.away.logo}
                               alt={fixture.teams.away.name}
                             />
-                            <Link to={`/informations/${fixture.teams.away.id}`}>
+                            <Link
+                              to={`/team-informations/${fixture.teams.away.id}`}
+                            >
                               {fixture.teams.away.name}
                             </Link>
                             <p className="absolute right-2">
@@ -215,6 +219,12 @@ function Home() {
                   {playerData.position === "Midfielder" &&
                     `Interceptions: ${playerData.interceptions}`}
                 </p>
+                <Link
+                  className="btn"
+                  to={`/player-informations/${playerData.id}`}
+                >
+                  Voir la page du joueur
+                </Link>
               </div>
             ) : (
               <span className="loading loading-spinner mx-auto flex w-32 text-success"></span>

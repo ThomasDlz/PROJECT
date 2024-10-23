@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 const Competitions = () => {
   const [rankings, setRankings] = useState(null);
@@ -185,7 +186,9 @@ const Competitions = () => {
                             src={team.team.logo}
                             alt={team.team.name}
                           />{" "}
-                          {team.team.name}
+                          <Link to={`/team-informations/${team.team.id}`}>
+                            {team.team.name}
+                          </Link>
                         </th>
                         <th>{team.points}</th>
                         <th>{team.all.played}</th>
@@ -223,9 +226,12 @@ const Competitions = () => {
                     src={player.teamLogo}
                     alt={player.name}
                   />
-                  <p className="pl-2">
+                  <Link
+                    to={`/player-informations/${player.id}`}
+                    className="pl-2"
+                  >
                     {player.name} - {player.goals} buts
-                  </p>
+                  </Link>
                 </li>
               ))
             ) : (
@@ -244,9 +250,12 @@ const Competitions = () => {
                     src={player.teamLogo}
                     alt={player.name}
                   />
-                  <p className="pl-2">
+                  <Link
+                    to={`/player-informations/${player.id}`}
+                    className="pl-2"
+                  >
                     {player.name} - {player.assists} passes décisives
-                  </p>
+                  </Link>
                 </li>
               ))
             ) : (

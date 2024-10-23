@@ -10,6 +10,8 @@ import TeamInformations from "../pages/TeamInformations.jsx";
 import PlayerInformations from "../pages/PlayerInformations.jsx";
 import { loader as TeamLoader } from "../pages/TeamInformations.jsx";
 import { loader as PlayerLoader } from "../pages/PlayerInformations.jsx";
+import { loader as CoachLoader } from "../pages/CoachInformations.jsx";
+import CoachInformations from "../pages/CoachInformations.jsx";
 
 function ReactRouter() {
   const router = createBrowserRouter([
@@ -31,6 +33,11 @@ function ReactRouter() {
           path: "player-informations/:id",
           element: <PlayerInformations />,
           loader: PlayerLoader,
+        },
+        {
+          path: "coach-informations/:id",
+          element: <CoachInformations />,
+          loader: CoachLoader,
         },
         {
           path: "/competitions",
