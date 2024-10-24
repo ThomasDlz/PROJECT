@@ -9,7 +9,7 @@ const urlSeason = `&season=2022`;
 export const loader = async ({ params }) => {
   const { id } = params;
   var myHeaders = new Headers();
-  myHeaders.append("x-rapidapi-key", "9bdb0157032b97f104f4cb6ff5fb9a00");
+  // myHeaders.append("x-rapidapi-key", "9bdb0157032b97f104f4cb6ff5fb9a00");
   myHeaders.append("x-rapidapi-host", "v3.football.api-sports.io");
 
   var requestOptions = {
@@ -91,7 +91,7 @@ function PlayerInformations() {
             </h3>
             <h3>Nombre de passes : {statsData.response[0].passes.total}</h3>
             <h3>Passes décisives : {statsData.response[0].goals.assists}</h3>
-            <h3>Nombre de clés : {statsData.response[0].passes.key}</h3>
+            <h3>Nombre de passes clés : {statsData.response[0].passes.key}</h3>
             <h3>
               Pourcentage de précision des passes :{" "}
               {statsData.response[0].passes.accuracy}

@@ -1,4 +1,4 @@
-import { useLoaderData } from "react-router-dom";
+import { Link, useLoaderData } from "react-router-dom";
 
 const url = "https://v3.football.api-sports.io/teams?id=";
 const urlCoach = "https://v3.football.api-sports.io/coachs?team=";
@@ -9,7 +9,7 @@ const urlStats = `https://v3.football.api-sports.io/teams/statistics?league=39&s
 export const loader = async ({ params }) => {
   const { id } = params;
   var myHeaders = new Headers();
-  myHeaders.append("x-rapidapi-key", "9bdb0157032b97f104f4cb6ff5fb9a00");
+  // myHeaders.append("x-rapidapi-key", "9bdb0157032b97f104f4cb6ff5fb9a00");
   myHeaders.append("x-rapidapi-host", "v3.football.api-sports.io");
 
   var requestOptions = {
@@ -80,17 +80,21 @@ function TeamInformations() {
           <h3>Création : {teamData.response[0].team.founded}</h3>
           <h3>Pays : {teamData.response[0].team.country}</h3>
           <h3>Championnat : {leagueData.response[0].league.name}</h3>
-          <h3>
+          <Link to={`/coach-informations/${coachData.response[0].id}`}>
             Entraineur : {coachData.response[0].firstname}{" "}
             {coachData.response[0].name}
-          </h3>
+          </Link>
           <h3>Joueurs :</h3>
           {Object.keys(sortedPlayers).map((position) => (
             <div className="w-1/4 border" key={position}>
               <h4>{position}</h4>
               <ul>
                 {sortedPlayers[position].map((player) => (
-                  <li key={player.id}>{player.name}</li>
+                  <li key={player.id}>
+                    <Link to={`/player-informations/${player.id}`}>
+                      {player.name}
+                    </Link>
+                  </li>
                 ))}
               </ul>
             </div>
