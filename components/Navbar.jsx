@@ -3,6 +3,31 @@ import { FaCalendarDays } from "react-icons/fa6";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 
+const playerUrl = "https://v3.football.api-sports.io/players/profiles?search=";
+
+export const loader = async ({ request }) => {
+  const url = new URL(request.url);
+  const searchTerm = url.searchParams.get("search") || "";
+
+  var myHeaders = new Headers();
+  myHeaders.append("x-rapidapi-key", "9bdb0157032b97f104f4cb6ff5fb9a00");
+  myHeaders.append("x-rapidapi-host", "v3.football.api-sports.io");
+
+  var requestOptions = {
+    method: "GET",
+    headers: myHeaders,
+    redirect: "follow",
+  };
+
+  try {
+    const response = await fetch(`${playerUrl}${searchTerm}`, requestOptions);
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
 function Navbar() {
   return (
     <>
@@ -27,11 +52,14 @@ function Navbar() {
         </div>
         <div className="flex-none gap-2">
           <div className="form-control">
-            <input
-              type="text"
-              placeholder="Rechercher"
-              className="input input-bordered w-40 md:w-auto"
-            />
+            <form method="get" action="/?index">
+              <input
+                type="search"
+                name="search"
+                placeholder="Rechercher"
+                className="input input-bordered w-40 md:w-auto"
+              />
+            </form>
           </div>
 
           <div className="btn btn-circle btn-ghost lg:hidden">

@@ -8,7 +8,7 @@ const urlLineups = "https://v3.football.api-sports.io/fixtures?id=";
 export const loader = async ({ params }) => {
   const { id } = params;
   var myHeaders = new Headers();
-  myHeaders.append("x-rapidapi-key", "9bdb0157032b97f104f4cb6ff5fb9a00");
+  // myHeaders.append("x-rapidapi-key", "9bdb0157032b97f104f4cb6ff5fb9a00");
   myHeaders.append("x-rapidapi-host", "v3.football.api-sports.io");
 
   var requestOptions = {
