@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { FaCalendarDays } from "react-icons/fa6";
 import Calendar from "react-calendar";
@@ -9,11 +10,12 @@ export const loader = async ({ request }) => {
   const url = new URL(request.url);
   const searchTerm = url.searchParams.get("search") || "";
 
-  var myHeaders = new Headers();
-  myHeaders.append("x-rapidapi-key", "9bdb0157032b97f104f4cb6ff5fb9a00");
-  myHeaders.append("x-rapidapi-host", "v3.football.api-sports.io");
+  const myHeaders = new Headers({
+    "x-rapidapi-key": "9bdb0157032b97f104f4cb6ff5fb9a00",
+    "x-rapidapi-host": "v3.football.api-sports.io",
+  });
 
-  var requestOptions = {
+  const requestOptions = {
     method: "GET",
     headers: myHeaders,
     redirect: "follow",
@@ -29,6 +31,44 @@ export const loader = async ({ request }) => {
 };
 
 function Navbar() {
+  const [searchTerm, setSearchTerm] = useState("");
+  const [results, setResults] = useState([]);
+  const [showResults, setShowResults] = useState(false);
+
+  useEffect(() => {
+    if (searchTerm.length > 0) {
+      fetchResults(searchTerm);
+    } else {
+      setResults([]);
+      setShowResults(false);
+    }
+  }, [searchTerm]);
+
+  const fetchResults = async (term) => {
+    const myHeaders = new Headers({
+      "x-rapidapi-key": "9bdb0157032b97f104f4cb6ff5fb9a00",
+      "x-rapidapi-host": "v3.football.api-sports.io",
+    });
+
+    const requestOptions = {
+      method: "GET",
+      headers: myHeaders,
+      redirect: "follow",
+    };
+
+    try {
+      const response = await fetch(`${playerUrl}${term}`, requestOptions);
+      const data = await response.json();
+      const sortedPlayers = data.response.sort(
+        (a, b) => a.player.id - b.player.id,
+      );
+      setResults(sortedPlayers);
+      setShowResults(true);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
   return (
     <>
       <div className="navbar bg-base-100 md:container md:mx-auto">
@@ -51,15 +91,37 @@ function Navbar() {
           </ul>
         </div>
         <div className="flex-none gap-2">
-          <div className="form-control">
-            <form method="get" action="/?index">
-              <input
-                type="search"
-                name="search"
-                placeholder="Rechercher"
-                className="input input-bordered w-40 md:w-auto"
-              />
-            </form>
+          <div className="form-control relative">
+            <input
+              type="search"
+              name="search"
+              placeholder="Rechercher"
+              className="input input-bordered w-40 md:w-auto"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              onFocus={() => setShowResults(true)}
+            />
+            {showResults && results.length > 0 && (
+              <div className="absolute mt-12 max-h-60 w-full overflow-y-auto rounded-md border border-gray-300 bg-base-100 shadow-lg">
+                <ul>
+                  {results.map((player, index) => (
+                    <li key={index} className="flex hover:bg-base-300">
+                      <img
+                        className="size-10 rounded-3xl"
+                        src={player.player.photo}
+                        alt=""
+                      />
+                      <Link
+                        to={`/player-informations/${player.player.id}`}
+                        className="ml-4"
+                      >
+                        {player.player.name}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </div>
 
           <div className="btn btn-circle btn-ghost lg:hidden">

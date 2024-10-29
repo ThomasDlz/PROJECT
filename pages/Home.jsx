@@ -6,61 +6,89 @@ import { Link } from "react-router-dom";
 function Home() {
   const [value, setValue] = useState(new Date());
   const [fixtures, setFixtures] = useState(null);
-  const [playerData, setPlayerData] = useState(null);
+  const [ldcMatchs, setldcMatchs] = useState(null);
+  const [video, setVideo] = useState([]);
 
-  useEffect(() => {
-    if (value) {
-      const adjustedDate = new Date(value);
-      adjustedDate.setDate(adjustedDate.getDate() + 1);
+  useEffect(
+    () => {
+      if (value) {
+        const adjustedDate = new Date(value);
+        adjustedDate.setDate(adjustedDate.getDate() + 1);
 
-      const formattedDate = adjustedDate.toISOString().split("T")[0];
+        const formattedDate = adjustedDate.toISOString().split("T")[0];
 
-      var myHeaders = new Headers();
-      // myHeaders.append("x-rapidapi-key", "9bdb0157032b97f104f4cb6ff5fb9a00");
-      myHeaders.append("x-rapidapi-host", "v3.football.api-sports.io");
+        var myHeaders = new Headers();
+        myHeaders.append("x-rapidapi-key", "9bdb0157032b97f104f4cb6ff5fb9a00");
+        myHeaders.append("x-rapidapi-host", "v3.football.api-sports.io");
 
-      var requestOptions = {
-        method: "GET",
-        headers: myHeaders,
-        redirect: "follow",
-      };
+        var requestOptions = {
+          method: "GET",
+          headers: myHeaders,
+          redirect: "follow",
+        };
 
-      fetch(
-        "https://v3.football.api-sports.io/players?id=292&season=2022",
-        requestOptions,
-      )
-        .then((response) => response.json())
-        .then((result) => {
-          const player = result.response[0].player;
-          const statistics = result.response[0].statistics[0];
-          console.log(result);
+        // var today = new Date();
+        // var nextDays = new Date();
+        // nextDays.setDate(today.getDate() + 30);
 
-          setPlayerData({
-            name: `${player.firstname} ${player.lastname}`,
-            age: player.age,
-            nationality: player.nationality,
-            photo: player.photo,
-            position: statistics.games.position,
-            team: statistics.team.name,
-            goals: statistics.goals.total,
-            saves: statistics.goals.saves,
-            tackle: statistics.tackles.total,
-            interceptions: statistics.tackles.interceptions,
-          });
-        })
-        .catch((error) => console.log("error", error));
+        fetch(
+          `https://v3.football.api-sports.io/fixtures?league=2&season=2022&from=2022-10-29&to=2022-11-14`,
+          requestOptions,
+        )
+          .then((response) => response.json())
+          .then((result) => {
+            if (result.response && result.response.length > 0) {
+              const ldcDate = result.response[0].fixture;
+              const ldcTeams = result.response[0].teams;
 
-      fetch(
-        `https://v3.football.api-sports.io/fixtures?date=${formattedDate}`,
-        requestOptions,
-      )
-        .then((response) => response.json())
-        .then((result) => {
-          setFixtures(result.response);
-        })
-        .catch((error) => console.log("error", error));
-    }
-  }, [value]);
+              if (ldcDate && ldcTeams) {
+                setldcMatchs({
+                  date: ldcDate.date,
+                  homeTeam: ldcTeams.home.name,
+                  homeLogo: ldcTeams.home.logo,
+                  awayTeam: ldcTeams.away.name,
+                  awayLogo: ldcTeams.away.logo,
+                });
+              } else {
+                console.error("League or standings data is missing");
+              }
+            } else {
+              console.error("No response data found");
+            }
+          })
+          .catch((error) => console.log("error", error));
+
+        fetch(
+          `https://v3.football.api-sports.io/fixtures?date=${formattedDate}`,
+          requestOptions,
+        )
+          .then((response) => response.json())
+          .then((result) => {
+            setFixtures(result.response);
+          })
+          .catch((error) => console.log("error", error));
+
+        fetch(
+          `https://www.scorebat.com/video-api/v3/feed/?token=MTgzODMwXzE3MzAxOTc1NjJfNGY0NDdkNzRhZDMyNTU0ZTUzNDc0NWJkYzBhOWRiYzcxZjRlZGU3ZA==`,
+        )
+          .then((response) => response.json())
+          .then((result) => {
+            if (result.response && result.response.length > 0) {
+              const vids = result.response.map((vid) => ({
+                title: vid.title,
+                media: vid.videos[0].embed,
+              }));
+              setVideo(vids);
+            } else {
+              console.error("League or standings data is missing");
+            }
+          })
+          .catch((error) => console.log("error", error));
+      }
+    },
+    [value],
+    [],
+  );
 
   const allowedLeagueIds = [
     1, 2, 3, 4, 5, 6, 7, 9, 39, 45, 48, 61, 65, 66, 78, 88, 94, 135, 137, 140,
@@ -185,63 +213,84 @@ function Home() {
                   ),
                 )
               ) : (
-                <p>Aucun match disponible pour cette date.</p>
+                <span className="mx-auto flex text-warning">
+                  Aucun match disponible
+                </span>
               )}
             </div>
           </div>
 
-          <div className="col-start-6 col-end-8 hidden rounded-3xl border border-gray-300 bg-base-100/60 p-4 lg:block">
+          <div className="col-start-1 col-end-3 row-start-2 row-end-4 hidden rounded-3xl border border-gray-300 bg-base-100/60 p-4 lg:block">
             <h3 className="text-center text-3xl">
-              {playerData ? playerData.name : "Chargement..."}
+              {ldcMatchs
+                ? "Prochains Matchs de Ligue des Champions"
+                : "PROCHAINS MATCHS DE LIGUE DES CHAMPIONS"}
             </h3>
 
             <div className="divider divider-success"></div>
-
-            {playerData ? (
-              <div className="relative">
-                <p>Âge: {playerData.age}</p>
-                <img
-                  className="absolute right-2 top-0 size-16 rounded-full border xl:size-24 2xl:size-28"
-                  src={playerData.photo}
-                  alt={playerData.name}
-                />
-                <p>Nationalité: {playerData.nationality}</p>
-                <p>Club: {playerData.team}</p>
-                <p>Position: {playerData.position}</p>
-
+            {ldcMatchs ? (
+              <div className="flex">
+                <div>
+                  <img src={ldcMatchs.homeLogo} alt={ldcMatchs.homeTeam} />
+                  <p>{ldcMatchs.homeTeam}</p>
+                </div>
                 <p>
-                  {playerData.position === "Attacker" &&
-                    `Buts: ${playerData.goals}`}
-                  {playerData.position === "Goalkeeper" &&
-                    `Arrets: ${playerData.saves}`}
-                  {playerData.position === "Defender" &&
-                    `Tacles: ${playerData.tackle}`}
-                  {playerData.position === "Midfielder" &&
-                    `Interceptions: ${playerData.interceptions}`}
+                  {new Date(ldcMatchs.date).toLocaleDateString("fr-FR", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  })}{" "}
+                  -{" "}
+                  {new Date(ldcMatchs.date).toLocaleTimeString("fr-FR", {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })}
                 </p>
-                <Link
-                  className="btn"
-                  to={`/player-informations/${playerData.id}`}
-                >
-                  Voir la page du joueur
-                </Link>
+                <div>
+                  <img src={ldcMatchs.awayLogo} alt={ldcMatchs.awayTeam} />
+                  <p>{ldcMatchs.awayTeam}</p>
+                </div>
               </div>
             ) : (
-              <span className="loading loading-spinner mx-auto flex w-32 text-success"></span>
+              <span className="mx-auto flex text-warning">
+                Aucun match disponible
+              </span>
             )}
           </div>
 
-          <div className="col-start-1 col-end-3 row-start-2 row-end-4 hidden rounded-3xl border border-gray-300 bg-base-100/60 p-4 lg:block">
-            <h3 className="text-center text-3xl">ttttttttttttt</h3>
-            <div className="divider divider-success"></div>
-          </div>
           <div className="col-start-3 col-end-6 hidden h-full rounded-3xl border border-gray-300 bg-base-100/60 p-4 md:container lg:block">
-            <h3 className="text-center text-3xl">ooooooooooooo</h3>
+            <h3 className="text-center text-3xl">zzzzzzzzzzzzz</h3>
             <div className="divider divider-success"></div>
           </div>
-          <div className="col-start-6 col-end-8 row-start-2 row-end-4 hidden rounded-3xl border border-gray-300 bg-base-100/60 p-4 lg:block">
-            <h3 className="text-center text-3xl">kkkkkkkkkkkk</h3>
-            <div className="divider divider-success"></div>
+
+          <div className="col-start-6 col-end-8 row-start-1 row-end-4 hidden overflow-x-auto rounded-3xl border border-gray-300 bg-base-100/60 lg:block">
+            <h3 className="px-4 pt-4 text-center text-3xl">
+              {video
+                ? "RÉSUMÉ DES DERNIERS MATCHS"
+                : "PROCHAINS MATCHS DE LIGUE DES CHAMPIONS"}
+            </h3>
+
+            <div className="divider divider-success px-4"></div>
+            {video ? (
+              video.map((vid, index) => (
+                <div
+                  key={index}
+                  className="mb-8 ml-3 flex rounded-xl border bg-base-100"
+                >
+                  <div className="w-full">
+                    <h2 className="text-center text-xl">{vid.title}</h2>
+                    <div
+                      className="p-2"
+                      dangerouslySetInnerHTML={{ __html: vid.media }}
+                    />
+                  </div>
+                </div>
+              ))
+            ) : (
+              <span className="mx-auto flex text-warning">
+                Pas de vidéo disponible
+              </span>
+            )}
           </div>
         </div>
       </div>

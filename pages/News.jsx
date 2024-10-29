@@ -15,9 +15,9 @@ function News() {
         if (result.articles && result.articles.length > 0) {
           const articles = result.articles.slice(0, 8).map((article) => ({
             title: article.title,
-            description: article.description, // correspondance des noms
+            description: article.description,
             image: article.image,
-            url: article.url, // ajoute l’URL si nécessaire
+            url: article.url,
           }));
           setNews(articles);
         } else {
@@ -25,7 +25,7 @@ function News() {
         }
       })
       .catch((error) => console.log("error", error));
-  }, []); // ajout de la dépendance vide pour exécuter le fetch au montage
+  }, []);
 
   return (
     <>
@@ -42,7 +42,7 @@ function News() {
               {news && news.length > 0 ? (
                 news.map((article, index) => (
                   <div
-                    className="max-h-1/2 glass mx-auto max-w-80 rounded-3xl border p-4"
+                    className="max-h-1/2 glass mx-auto flex max-w-80 flex-col justify-between rounded-3xl border p-4"
                     key={index}
                   >
                     <h2 className="text-white underline underline-offset-2">
@@ -50,7 +50,7 @@ function News() {
                     </h2>
                     <p className="mt-2 text-slate-300">{article.description}</p>
                     <img
-                      className="mt-2"
+                      className="mt-2 rounded-lg"
                       src={article.image}
                       alt={article.title}
                     />
