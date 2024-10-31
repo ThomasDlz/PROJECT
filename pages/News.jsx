@@ -25,7 +25,7 @@ function News() {
         }
       })
       .catch((error) => console.log("error", error));
-  }, []);
+  });
 
   return (
     <>
@@ -64,7 +64,7 @@ function News() {
                   </div>
                 ))
               ) : (
-                <p>Aucun article trouvé</p>
+                <span className="loading loading-spinner mx-auto w-full"></span>
               )}
             </div>
           </div>

@@ -262,7 +262,8 @@ const Competitions = () => {
               <p>Chargement des meilleurs passeurs...</p>
             )}
           </ul>
-          <h3>Meilleurs championnats</h3>
+          <h3 className="mt-4 text-center text-3xl">Meilleurs championnats</h3>
+          <div className="divider divider-success"></div>
           <ul>
             <li>Premier League</li>
             <li>La Liga</li>

@@ -221,6 +221,11 @@ function Home() {
           </div>
 
           <div className="col-start-1 col-end-3 row-start-2 row-end-4 hidden rounded-3xl border border-gray-300 bg-base-100/60 p-4 lg:block">
+            <h3 className="text-center text-3xl">zzzzzzzzzzzzz</h3>
+            <div className="divider divider-success"></div>
+          </div>
+
+          <div className="col-start-3 col-end-6 hidden h-full rounded-3xl border border-gray-300 bg-base-100/60 p-4 md:container lg:block">
             <h3 className="text-center text-3xl">
               {ldcMatchs
                 ? "Prochains Matchs de Ligue des Champions"
@@ -229,9 +234,13 @@ function Home() {
 
             <div className="divider divider-success"></div>
             {ldcMatchs ? (
-              <div className="flex">
+              <div className="flex justify-between">
                 <div>
-                  <img src={ldcMatchs.homeLogo} alt={ldcMatchs.homeTeam} />
+                  <img
+                    className="size-32"
+                    src={ldcMatchs.homeLogo}
+                    alt={ldcMatchs.homeTeam}
+                  />
                   <p>{ldcMatchs.homeTeam}</p>
                 </div>
                 <p>
@@ -247,7 +256,11 @@ function Home() {
                   })}
                 </p>
                 <div>
-                  <img src={ldcMatchs.awayLogo} alt={ldcMatchs.awayTeam} />
+                  <img
+                    className="size-32"
+                    src={ldcMatchs.awayLogo}
+                    alt={ldcMatchs.awayTeam}
+                  />
                   <p>{ldcMatchs.awayTeam}</p>
                 </div>
               </div>
@@ -256,11 +269,6 @@ function Home() {
                 Aucun match disponible
               </span>
             )}
-          </div>
-
-          <div className="col-start-3 col-end-6 hidden h-full rounded-3xl border border-gray-300 bg-base-100/60 p-4 md:container lg:block">
-            <h3 className="text-center text-3xl">zzzzzzzzzzzzz</h3>
-            <div className="divider divider-success"></div>
           </div>
 
           <div className="col-start-6 col-end-8 row-start-1 row-end-4 hidden overflow-x-auto rounded-3xl border border-gray-300 bg-base-100/60 lg:block">
