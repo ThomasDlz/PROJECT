@@ -8,6 +8,12 @@ function Home() {
   const [fixtures, setFixtures] = useState(null);
   const [ldcMatchs, setldcMatchs] = useState(null);
   const [video, setVideo] = useState([]);
+  const [news, setNews] = useState([]);
+
+  const apikey = "0a135fcf9f0b411ca918ab9f2fe6ff6e";
+  const url =
+    "https://gnews.io/api/v4/search?q=football&lang=fr&country=fr&max=10&apikey=" +
+    apikey;
 
   useEffect(
     () => {
@@ -30,6 +36,28 @@ function Home() {
         // var today = new Date();
         // var nextDays = new Date();
         // nextDays.setDate(today.getDate() + 30);
+
+        fetch(url)
+          .then((response) => response.json())
+          .then((result) => {
+            if (result.articles && result.articles.length > 0) {
+              const articles = result.articles[0];
+
+              if (articles) {
+                setNews({
+                  title: articles.title,
+                  description: articles.description,
+                  image: articles.image,
+                  url: articles.url,
+                });
+              } else {
+                console.error("League or standings data is missing");
+              }
+            } else {
+              console.error("No response data found");
+            }
+          })
+          .catch((error) => console.log("error", error));
 
         fetch(
           `https://v3.football.api-sports.io/fixtures?league=2&season=2022&from=2022-10-29&to=2022-11-14`,
@@ -202,9 +230,12 @@ function Home() {
                             </p>
                           </div>
                           <p>
-                            Heure :{" "}
                             {new Date(fixture.fixture.date).toLocaleTimeString(
                               "fr-FR",
+                              {
+                                hour: "2-digit",
+                                minute: "2-digit",
+                              },
                             )}
                           </p>
                         </div>
@@ -221,15 +252,34 @@ function Home() {
           </div>
 
           <div className="col-start-1 col-end-3 row-start-2 row-end-4 hidden rounded-3xl border border-gray-300 bg-base-100/60 p-4 lg:block">
-            <h3 className="text-center text-3xl">zzzzzzzzzzzzz</h3>
+            <h3 className="text-center text-3xl">A LA UNE</h3>
             <div className="divider divider-success"></div>
+            {news ? (
+              <div className="mx-auto flex flex-col justify-between rounded-3xl">
+                <h2 className="text-white underline underline-offset-2">
+                  {news.title}
+                </h2>
+                <p className="mt-2 text-slate-300">
+                  {news.description?.length > 280
+                    ? `${news.description.slice(0, 280)}...`
+                    : news.description}
+                </p>
+
+                <img className="mt-2 rounded-lg" src={news.image} alt="" />
+                <Link className="btn btn-success mb-4 mt-4" to={"/news"}>
+                  Voir plus d{"'"}actualités
+                </Link>
+              </div>
+            ) : (
+              <span className="mx-auto flex text-warning">
+                Aucune info disponible
+              </span>
+            )}
           </div>
 
-          <div className="col-start-3 col-end-6 hidden h-full rounded-3xl border border-gray-300 bg-base-100/60 p-4 md:container lg:block">
+          <div className="col-start-3 col-end-6 hidden h-full overflow-scroll rounded-3xl border border-gray-300 bg-base-100/60 p-4 md:container lg:block">
             <h3 className="text-center text-3xl">
-              {ldcMatchs
-                ? "Prochains Matchs de Ligue des Champions"
-                : "PROCHAINS MATCHS DE LIGUE DES CHAMPIONS"}
+              PROCHAINS MATCHS DE LIGUE DES CHAMPIONS
             </h3>
 
             <div className="divider divider-success"></div>
@@ -237,13 +287,13 @@ function Home() {
               <div className="flex justify-between">
                 <div>
                   <img
-                    className="size-32"
+                    className="mx-auto h-24"
                     src={ldcMatchs.homeLogo}
                     alt={ldcMatchs.homeTeam}
                   />
                   <p>{ldcMatchs.homeTeam}</p>
                 </div>
-                <p>
+                <p className="mt-12">
                   {new Date(ldcMatchs.date).toLocaleDateString("fr-FR", {
                     year: "numeric",
                     month: "long",
@@ -257,7 +307,7 @@ function Home() {
                 </p>
                 <div>
                   <img
-                    className="size-32"
+                    className="mx-auto h-24"
                     src={ldcMatchs.awayLogo}
                     alt={ldcMatchs.awayTeam}
                   />
@@ -273,9 +323,7 @@ function Home() {
 
           <div className="col-start-6 col-end-8 row-start-1 row-end-4 hidden overflow-x-auto rounded-3xl border border-gray-300 bg-base-100/60 lg:block">
             <h3 className="px-4 pt-4 text-center text-3xl">
-              {video
-                ? "RÉSUMÉ DES DERNIERS MATCHS"
-                : "PROCHAINS MATCHS DE LIGUE DES CHAMPIONS"}
+              RÉSUMÉ DES DERNIERS MATCHS
             </h3>
 
             <div className="divider divider-success px-4"></div>

@@ -64,7 +64,7 @@ function News() {
                   </div>
                 ))
               ) : (
-                <span className="loading loading-spinner mx-auto w-full"></span>
+                <span className="loading loading-spinner w-full"></span>
               )}
             </div>
           </div>
