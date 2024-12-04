@@ -7,8 +7,10 @@ commandes :
 - npm i http-status-codes
 - npm i jsonwebtoken
 - npm i cookie-parser
+- npm i mongoose
 - npm i express-mongo-sanitize
 - npm i express-rate-limit
+- npm i zod
 - npm i helmet
 - npm i cors
 - npm i swagger-ui-express
@@ -18,6 +20,7 @@ commandes :
 - npm i datauri
 - npm i cloudinary
 - npm i stripe
+- npm i bcryptjs
 
 git init
 git add .
