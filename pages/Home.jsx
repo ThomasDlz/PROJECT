@@ -176,14 +176,15 @@ function Home() {
               value={value}
             />
           </div>
-          <div className="w-full overflow-scroll rounded-3xl border border-gray-300 bg-base-100/60 p-4 lg:col-start-3 lg:col-end-6 lg:row-start-1 lg:row-end-3 lg:min-w-96">
+
+          <div className="mx-4 w-full overflow-scroll rounded-3xl border border-gray-300 bg-base-100/60 p-4 lg:col-start-3 lg:col-end-6 lg:row-start-1 lg:row-end-3 lg:mx-0 lg:min-w-96">
             <h3 className="text-center text-3xl">MATCHS DU JOUR</h3>
-            <div className="divider divider-success"></div>
             <div>
               {fixtures ? (
                 groupFixturesByLeague(fixtures).map(
                   ([leagueName, leagueData]) => (
                     <div key={leagueName}>
+                      <div className="divider divider-success"></div>
                       <div className="flex items-center">
                         <img
                           className="w-8 rounded-xl"
@@ -197,9 +198,18 @@ function Home() {
                       {leagueData.fixtures.map((fixture) => (
                         <div
                           key={fixture.fixture.id}
-                          className="rounded transition-all hover:bg-white/10"
+                          className="mb-4 rounded transition-all hover:bg-white/10"
                         >
-                          <div className="relative flex">
+                          <p className="ml-2">
+                            {new Date(fixture.fixture.date).toLocaleTimeString(
+                              "fr-FR",
+                              {
+                                hour: "2-digit",
+                                minute: "2-digit",
+                              },
+                            )}
+                          </p>
+                          <div className="relative mb-1 flex">
                             <img
                               className="max-h-8 w-8"
                               src={fixture.teams.home.logo}
@@ -229,24 +239,13 @@ function Home() {
                               {fixture.score.fulltime.away}
                             </p>
                           </div>
-                          <p>
-                            {new Date(fixture.fixture.date).toLocaleTimeString(
-                              "fr-FR",
-                              {
-                                hour: "2-digit",
-                                minute: "2-digit",
-                              },
-                            )}
-                          </p>
                         </div>
                       ))}
                     </div>
                   ),
                 )
               ) : (
-                <span className="mx-auto flex text-warning">
-                  Aucun match disponible
-                </span>
+                <span className="mx-auto flex">Aucun match disponible</span>
               )}
             </div>
           </div>
@@ -265,13 +264,17 @@ function Home() {
                     : news.description}
                 </p>
 
-                <img className="mt-2 rounded-lg" src={news.image} alt="" />
+                <img
+                  className="mt-2 max-h-52 rounded-lg"
+                  src={news.image}
+                  alt=""
+                />
                 <Link className="btn btn-success mb-4 mt-4" to={"/news"}>
                   Voir plus d{"'"}actualités
                 </Link>
               </div>
             ) : (
-              <span className="mx-auto flex text-warning">
+              <span className="mx-auto flex justify-center">
                 Aucune info disponible
               </span>
             )}
@@ -315,7 +318,7 @@ function Home() {
                 </div>
               </div>
             ) : (
-              <span className="mx-auto flex text-warning">
+              <span className="mx-auto flex justify-center">
                 Aucun match disponible
               </span>
             )}

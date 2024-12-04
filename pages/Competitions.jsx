@@ -215,62 +215,73 @@ const Competitions = () => {
         </div>
 
         <div className="ml-4 hidden h-full w-full rounded-3xl border border-gray-300 bg-base-100/60 p-4 md:container lg:block lg:w-1/4 2xl:w-1/4">
-          <h3 className="text-center text-3xl">Meilleurs buteurs</h3>
-          <div className="divider divider-success"></div>
-          <ul>
-            {topscorers.length > 0 ? (
-              topscorers.map((player, index) => (
-                <li className="flex p-1" key={index}>
-                  <img
-                    className="size-6"
-                    src={player.teamLogo}
-                    alt={player.name}
-                  />
-                  <Link
-                    to={`/player-informations/${player.id}`}
-                    className="pl-2"
-                  >
-                    {player.name} - {player.goals} buts
-                  </Link>
-                </li>
-              ))
-            ) : (
-              <p>Chargement des meilleurs buteurs...</p>
-            )}
-          </ul>
+          <section className="flex h-full flex-col justify-between">
+            <div>
+              <h3 className="text-center text-3xl">Meilleurs buteurs</h3>
+              <div className="divider divider-success"></div>
+              <ul>
+                {topscorers.length > 0 ? (
+                  topscorers.map((player, index) => (
+                    <li className="flex p-1" key={index}>
+                      <img
+                        className="size-6"
+                        src={player.teamLogo}
+                        alt={player.name}
+                      />
+                      <Link
+                        to={`/player-informations/${player.id}`}
+                        className="pl-2"
+                      >
+                        {player.name} - {player.goals} buts
+                      </Link>
+                    </li>
+                  ))
+                ) : (
+                  <p>Chargement des meilleurs buteurs...</p>
+                )}
+              </ul>
+            </div>
 
-          <h3 className="mt-4 text-center text-3xl">Meilleurs passeurs</h3>
-          <div className="divider divider-success"></div>
-          <ul>
-            {topassists.length > 0 ? (
-              topassists.map((player, index) => (
-                <li className="flex p-1" key={index}>
-                  <img
-                    className="size-6"
-                    src={player.teamLogo}
-                    alt={player.name}
-                  />
-                  <Link
-                    to={`/player-informations/${player.id}`}
-                    className="pl-2"
-                  >
-                    {player.name} - {player.assists} passes décisives
-                  </Link>
-                </li>
-              ))
-            ) : (
-              <p>Chargement des meilleurs passeurs...</p>
-            )}
-          </ul>
-          <h3 className="mt-4 text-center text-3xl">Meilleurs championnats</h3>
-          <div className="divider divider-success"></div>
-          <ul>
-            <li>Premier League</li>
-            <li>La Liga</li>
-            <li>Ligue 1</li>
-            <li>Bundeslisga</li>
-            <li>Serie A</li>
-          </ul>
+            <div>
+              <h3 className="mt-4 text-center text-3xl">Meilleurs passeurs</h3>
+              <div className="divider divider-success"></div>
+              <ul>
+                {topassists.length > 0 ? (
+                  topassists.map((player, index) => (
+                    <li className="flex p-1" key={index}>
+                      <img
+                        className="size-6"
+                        src={player.teamLogo}
+                        alt={player.name}
+                      />
+                      <Link
+                        to={`/player-informations/${player.id}`}
+                        className="pl-2"
+                      >
+                        {player.name} - {player.assists} passes décisives
+                      </Link>
+                    </li>
+                  ))
+                ) : (
+                  <p>Chargement des meilleurs passeurs...</p>
+                )}
+              </ul>
+            </div>
+
+            <div>
+              <h3 className="mt-4 text-center text-3xl">
+                Meilleurs championnats
+              </h3>
+              <div className="divider divider-success"></div>
+              <ul>
+                <li>Premier League</li>
+                <li>La Liga</li>
+                <li>Ligue 1</li>
+                <li>Bundeslisga</li>
+                <li>Serie A</li>
+              </ul>
+            </div>
+          </section>
         </div>
       </div>
     </div>

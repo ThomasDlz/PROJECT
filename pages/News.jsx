@@ -64,7 +64,7 @@ function News() {
                   </div>
                 ))
               ) : (
-                <span className="loading loading-spinner w-full"></span>
+                <span className="loading loading-spinner absolute left-1/2 top-1/2 w-72 -translate-x-1/2 -translate-y-1/2"></span>
               )}
             </div>
           </div>
