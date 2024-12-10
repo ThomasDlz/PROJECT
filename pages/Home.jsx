@@ -5,154 +5,122 @@ import { Link } from "react-router-dom";
 
 function Home() {
   const [value, setValue] = useState(new Date());
-  const [fixtures, setFixtures] = useState(null);
-  const [ldcMatchs, setldcMatchs] = useState(null);
-  const [video, setVideo] = useState([]);
-  const [news, setNews] = useState([]);
+  const [fixtures, setFixtures] = useState([]);
+  const [ldcMatchs, setLdcMatchs] = useState(null);
+  const [videos, setVideos] = useState([]);
+  const [news, setNews] = useState(null);
 
-  const apikey = "0a135fcf9f0b411ca918ab9f2fe6ff6e";
-  const url =
-    "https://gnews.io/api/v4/search?q=football&lang=fr&country=fr&max=10&apikey=" +
-    apikey;
+  const API_KEY_NEWS = "0a135fcf9f0b411ca918ab9f2fe6ff6e";
+  const API_KEY_RAPID = "9bdb0157032b97f104f4cb6ff5fb9a00";
 
-  useEffect(
-    () => {
-      if (value) {
-        const adjustedDate = new Date(value);
-        adjustedDate.setDate(adjustedDate.getDate() + 1);
-
-        const formattedDate = adjustedDate.toISOString().split("T")[0];
-
-        var myHeaders = new Headers();
-        myHeaders.append("x-rapidapi-key", "9bdb0157032b97f104f4cb6ff5fb9a00");
-        myHeaders.append("x-rapidapi-host", "v3.football.api-sports.io");
-
-        var requestOptions = {
-          method: "GET",
-          headers: myHeaders,
-          redirect: "follow",
-        };
-
-        // var today = new Date();
-        // var nextDays = new Date();
-        // nextDays.setDate(today.getDate() + 30);
-
-        fetch(url)
-          .then((response) => response.json())
-          .then((result) => {
-            if (result.articles && result.articles.length > 0) {
-              const articles = result.articles[0];
-
-              if (articles) {
-                setNews({
-                  title: articles.title,
-                  description: articles.description,
-                  image: articles.image,
-                  url: articles.url,
-                });
-              } else {
-                console.error("League or standings data is missing");
-              }
-            } else {
-              console.error("No response data found");
-            }
-          })
-          .catch((error) => console.log("error", error));
-
-        fetch(
-          `https://v3.football.api-sports.io/fixtures?league=2&season=2022&from=2022-10-29&to=2022-11-14`,
-          requestOptions,
-        )
-          .then((response) => response.json())
-          .then((result) => {
-            if (result.response && result.response.length > 0) {
-              const ldcDate = result.response[0].fixture;
-              const ldcTeams = result.response[0].teams;
-
-              if (ldcDate && ldcTeams) {
-                setldcMatchs({
-                  date: ldcDate.date,
-                  homeTeam: ldcTeams.home.name,
-                  homeLogo: ldcTeams.home.logo,
-                  awayTeam: ldcTeams.away.name,
-                  awayLogo: ldcTeams.away.logo,
-                });
-              } else {
-                console.error("League or standings data is missing");
-              }
-            } else {
-              console.error("No response data found");
-            }
-          })
-          .catch((error) => console.log("error", error));
-
-        fetch(
-          `https://v3.football.api-sports.io/fixtures?date=${formattedDate}`,
-          requestOptions,
-        )
-          .then((response) => response.json())
-          .then((result) => {
-            setFixtures(result.response);
-          })
-          .catch((error) => console.log("error", error));
-
-        fetch(
-          `https://www.scorebat.com/video-api/v3/feed/?token=MTgzODMwXzE3MzAxOTc1NjJfNGY0NDdkNzRhZDMyNTU0ZTUzNDc0NWJkYzBhOWRiYzcxZjRlZGU3ZA==`,
-        )
-          .then((response) => response.json())
-          .then((result) => {
-            if (result.response && result.response.length > 0) {
-              const vids = result.response.map((vid) => ({
-                title: vid.title,
-                media: vid.videos[0].embed,
-              }));
-              setVideo(vids);
-            } else {
-              console.error("League or standings data is missing");
-            }
-          })
-          .catch((error) => console.log("error", error));
-      }
-    },
-    [value],
-    [],
-  );
+  const NEWS_URL = `https://gnews.io/api/v4/search?q=football&lang=fr&country=fr&max=10&apikey=${API_KEY_NEWS}`;
+  const RAPID_API_HEADERS = {
+    "x-rapidapi-key": API_KEY_RAPID,
+    "x-rapidapi-host": "v3.football.api-sports.io",
+  };
+  const VIDEO_API_URL =
+    "https://www.scorebat.com/video-api/v3/feed/?token=MTgzODMwXzE3MzAxOTc1NjJfNGY0NDdkNzRhZDMyNTU0ZTUzNDc0NWJkYzBhOWRiYzcxZjRlZGU3ZA==";
 
   const allowedLeagueIds = [
     1, 2, 3, 4, 5, 6, 7, 9, 39, 45, 48, 61, 65, 66, 78, 88, 94, 135, 137, 140,
     143, 848,
   ];
-
-  // Priorités des ligues principales (Premier League, Ligue 1, etc.)
   const leaguePriority = {
-    39: 1, // Premier League
-    61: 2, // Ligue 1
-    140: 3, // La Liga
-    78: 4, // Bundesliga
-    135: 5, // Serie A
+    39: 1,
+    61: 2,
+    140: 3,
+    78: 4,
+    135: 5,
   };
 
-  // Fonction pour grouper les matchs par ligue et les trier par priorité
-  const groupFixturesByLeague = (fixtures) => {
-    const groupedFixtures = fixtures.reduce((acc, fixture) => {
-      const leagueId = fixture.league.id;
+  useEffect(() => {
+    const fetchNews = async () => {
+      try {
+        const response = await fetch(NEWS_URL);
+        const data = await response.json();
+        if (data.articles?.length) {
+          setNews(data.articles[0]);
+        }
+      } catch (error) {
+        console.error("Error fetching news:", error);
+      }
+    };
 
-      // Filtrer les ligues selon les IDs autorisés
+    const fetchFixtures = async (date) => {
+      try {
+        const response = await fetch(
+          `https://v3.football.api-sports.io/fixtures?date=${date}`,
+          { headers: RAPID_API_HEADERS },
+        );
+        const data = await response.json();
+        setFixtures(data.response || []);
+      } catch (error) {
+        console.error("Error fetching fixtures:", error);
+      }
+    };
+
+    const fetchLdcMatchs = async () => {
+      try {
+        const response = await fetch(
+          "https://v3.football.api-sports.io/fixtures?league=2&season=2022&from=2022-10-29&to=2022-11-14",
+          { headers: RAPID_API_HEADERS },
+        );
+        const data = await response.json();
+        if (data.response?.length) {
+          const { fixture, teams } = data.response[0];
+          setLdcMatchs({
+            date: fixture.date,
+            homeTeam: teams.home.name,
+            homeLogo: teams.home.logo,
+            awayTeam: teams.away.name,
+            awayLogo: teams.away.logo,
+          });
+        }
+      } catch (error) {
+        console.error("Error fetching LDC matches:", error);
+      }
+    };
+
+    const fetchVideos = async () => {
+      try {
+        const response = await fetch(VIDEO_API_URL);
+        const data = await response.json();
+        setVideos(
+          data.response?.map((vid) => ({
+            title: vid.title,
+            media: vid.videos[0].embed,
+          })) || [],
+        );
+      } catch (error) {
+        console.error("Error fetching videos:", error);
+      }
+    };
+
+    const adjustedDate = new Date(value);
+    adjustedDate.setDate(adjustedDate.getDate() + 1);
+    const formattedDate = adjustedDate.toISOString().split("T")[0];
+
+    fetchNews();
+    fetchFixtures(formattedDate);
+    fetchLdcMatchs();
+    fetchVideos();
+  }, [value]);
+
+  const groupFixturesByLeague = (fixtures) => {
+    const grouped = fixtures.reduce((acc, fixture) => {
+      const leagueId = fixture.league.id;
       if (allowedLeagueIds.includes(leagueId)) {
         if (!acc[fixture.league.name]) {
           acc[fixture.league.name] = {
             fixtures: [],
-            priority: leaguePriority[leagueId] || 99, // Priorité par défaut si pas dans leaguePriority
+            priority: leaguePriority[leagueId] || 99,
           };
         }
         acc[fixture.league.name].fixtures.push(fixture);
       }
-
       return acc;
     }, {});
-
-    // Trier les ligues par priorité
-    return Object.entries(groupedFixtures).sort(
+    return Object.entries(grouped).sort(
       (a, b) => a[1].priority - b[1].priority,
     );
   };
@@ -254,22 +222,17 @@ function Home() {
             <h3 className="text-center text-3xl">A LA UNE</h3>
             <div className="divider divider-success"></div>
             {news ? (
-              <div className="mx-auto flex flex-col justify-between rounded-3xl">
+              <div className="relative flex flex-col rounded-3xl">
                 <h2 className="text-white underline underline-offset-2">
                   {news.title}
                 </h2>
-                <p className="mt-2 text-slate-300">
-                  {news.description?.length > 280
-                    ? `${news.description.slice(0, 280)}...`
-                    : news.description}
-                </p>
+                <p className="text-slate-300">{news.description}</p>
 
-                <img
-                  className="mt-2 max-h-52 rounded-lg"
-                  src={news.image}
-                  alt=""
-                />
-                <Link className="btn btn-success mb-4 mt-4" to={"/news"}>
+                <img className="mt-2 rounded-lg" src={news.image} alt="" />
+                <Link
+                  className="btn btn-success absolute bottom-0 right-0 m-1 p-2"
+                  to={"/news"}
+                >
                   Voir plus d{"'"}actualités
                 </Link>
               </div>
@@ -330,8 +293,8 @@ function Home() {
             </h3>
 
             <div className="divider divider-success px-4"></div>
-            {video ? (
-              video.map((vid, index) => (
+            {videos ? (
+              videos.map((vid, index) => (
                 <div
                   key={index}
                   className="mb-8 ml-3 flex rounded-xl border bg-base-100"

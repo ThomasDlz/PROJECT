@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { FaCalendarDays } from "react-icons/fa6";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
+import axios from "../pages/services/AxiosConfig.jsx";
 
 const playerUrl = "https://v3.football.api-sports.io/players/profiles?search=";
 
@@ -34,6 +35,10 @@ function Navbar() {
   const [searchTerm, setSearchTerm] = useState("");
   const [results, setResults] = useState([]);
   const [showResults, setShowResults] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [message, setMessage] = useState(null);
+  const [alertType, setAlertType] = useState(null);
 
   useEffect(() => {
     if (searchTerm.length > 0) {
@@ -66,6 +71,38 @@ function Navbar() {
       setShowResults(true);
     } catch (error) {
       console.error("Error fetching data:", error);
+    }
+  };
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await axios.post("/auth/login", { email, password });
+      const { token, user } = response.data;
+
+      // Stocker le token dans le localStorage
+      localStorage.setItem("token", token);
+
+      // Affichez un message de succès
+      setMessage("Connexion réussie !");
+      setAlertType("success");
+
+      // Redirigez ou rechargez la page pour refléter l'état connecté
+      setTimeout(() => {
+        setMessage(null);
+        document.getElementById("my_modal_3").close();
+        window.location.reload(); // Ou utilisez un routeur pour rediriger
+      }, 2000);
+    } catch (error) {
+      // Affichez un message d'erreur
+      setMessage(
+        error.response?.data?.message || "Erreur lors de la connexion",
+      );
+      setAlertType("danger");
+
+      // Supprimez le message après 2 secondes
+      setTimeout(() => setMessage(null), 2000);
     }
   };
 
@@ -225,6 +262,11 @@ function Navbar() {
                     />
                   </figure>
                   <div className="card-body">
+                    {message && (
+                      <div className={`alert alert-${alertType}`}>
+                        <span>{message}</span>
+                      </div>
+                    )}
                     <label className="input input-bordered flex items-center gap-2">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -236,6 +278,8 @@ function Navbar() {
                       </svg>
                       <input
                         type="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
                         className="grow"
                         placeholder="Email"
                       />
@@ -255,6 +299,8 @@ function Navbar() {
                       </svg>
                       <input
                         type="password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
                         className="grow"
                         placeholder="********"
                       />
